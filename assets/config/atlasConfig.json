@@ -1,0 +1,9 @@
+{
+  "appId": "application-1-gvgat",
+  "appUrl": "https://realm.mongodb.com/groups/655ccb9a91924f47fd9a1dd7/apps/6568ea8d5c4b3521c63bbc74",
+  "baseUrl": "https://realm.mongodb.com",
+  "clientApiBaseUrl": "https://sa-east-1.aws.realm.mongodb.com",
+  "dataApiBaseUrl": "https://sa-east-1.aws.data.mongodb-api.com",
+  "dataExplorerLink": "https://cloud.mongodb.com/links/655ccb9a91924f47fd9a1dd7/explorer/MHMV",
+  "dataSourceName": "mongodb-atlas"
+}
