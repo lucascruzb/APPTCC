@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:listy/realm/schemas.dart';
+import 'package:listy/components/realm/schemas.dart';
+import '../../../components/s3/s3_storage_util.dart';
+import '../../../components/widgets.dart';
 
 class CardConfig extends StatelessWidget {
   const CardConfig({
@@ -12,82 +14,76 @@ class CardConfig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        children: _listScreens
-            .map((screen) => Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline,
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+    final s3controller = S3StorageUtil();
+
+    return GridView.count(
+      crossAxisCount: 2,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      children: _listScreens.map((screen) {
+        return Card(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          clipBehavior: Clip.hardEdge,
+          color: Colors.transparent,
+          elevation: 0,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).primaryColorDark,
+                    blurRadius: 40,
+                    offset: const Offset(2, 10),
                   ),
-                  clipBehavior: Clip.hardEdge,
-                  color: Colors.transparent,
-                  elevation: 0,
-                  child: Material(
-                    color: Colors.transparent,
-                    //borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorDark,
-                                blurRadius: 40,
-                                offset: const Offset(2, 10))
-                          ]),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(60),
-                        splashColor: Theme.of(context).primaryColorDark,
-                        onTap: () {
-                          Navigator.pushNamed(context, "/${screen.caminho}");
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              height: size.height * 0.12,
-                              width: size.width * 0.4,
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(0, 239, 236, 236),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
-                                image: DecorationImage(
-                                  image:
-                                      AssetImage("${screen.caminhoImagem}.png"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                ],
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(60),
+                splashColor: Theme.of(context).primaryColorDark,
+                onTap: () {
+                  Navigator.pushNamed(context, "/${screen.caminho}");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: onlineImageWidget(
+                            s3controller, screen.caminhoImagem),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorLight,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
                             ),
-                            Container(
-                              width: size.width * 0.4,
-                              height: size.height * 0.07,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColorLight,
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(30),
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.05,
-                              ),
-                              child: Center(child: Text(screen.nome)),
-                            ),
-                          ],
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05,
+                          ),
+                          child: Center(child: Text(screen.nome)),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ))
-            .toList(),
-      ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

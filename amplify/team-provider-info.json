@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mhmv-dev-211832-authRole",
+      "UnauthRoleArn": "arn:aws:iam::732736815617:role/amplify-mhmv-dev-211832-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::732736815617:role/amplify-mhmv-dev-211832-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mhmv-dev-211832-deployment",
+      "UnauthRoleName": "amplify-mhmv-dev-211832-unauthRole",
+      "StackName": "amplify-mhmv-dev-211832",
+      "StackId": "arn:aws:cloudformation:us-east-1:732736815617:stack/amplify-mhmv-dev-211832/6c65d2d0-cebc-11ee-a803-0a47691b326f",
+      "AmplifyAppId": "d3k9rbdci6vp3v"
+    },
+    "categories": {
+      "auth": {
+        "mhmvc2580dee": {}
+      },
+      "storage": {
+        "S3MHMV": {}
+      }
+    }
+  }
+}

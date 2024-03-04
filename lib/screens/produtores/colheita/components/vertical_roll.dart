@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
@@ -93,7 +91,7 @@ class ScreensConfig extends StatefulWidget {
   });
 
   @override
-  _ScreensConfigState createState() => _ScreensConfigState();
+  State<ScreensConfig> createState() => _ScreensConfigState();
 }
 
 class _ScreensConfigState extends State<ScreensConfig> {

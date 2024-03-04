@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:listy/realm/realm_services.dart';
-import 'package:listy/realm/schemas.dart';
-import 'package:listy/theme.dart';
+import 'package:listy/components/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:listy/realm/app_services.dart';
+import 'package:listy/components/realm/app_services.dart';
 
-import 'todo/components/widgets.dart';
+import '../components/widgets.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -47,9 +45,11 @@ class _LogInState extends State<LogIn> {
               children: [
                 Text(_isLogin ? 'Log In' : 'Sign Up',
                     style: const TextStyle(fontSize: 25)),
-                loginField(_emailController,
-                    labelText: "Email",
-                    hintText: "Enter valid email like abc@gmail.com"),
+                loginField(
+                  _emailController,
+                  labelText: "Email",
+                  hintText: "Enter valid email like abc@gmail.com",
+                ),
                 loginField(_passwordController,
                     labelText: "Password",
                     hintText: "Enter secure password",
@@ -104,32 +104,12 @@ class _LogInState extends State<LogIn> {
       } else {
         await appServices.registerUserEmailPassword(email, password);
       }
-
       if (!context.mounted) return;
-      ajustePermissao(context);
       Navigator.pushNamed(context, '/');
     } catch (err) {
       setState(() {
         _errorMessage = err.toString();
       });
     }
-  }
-
-  void ajustePermissao(BuildContext context) {
-    final realmServices = Provider.of<RealmServices>(context);
-    realmServices.switchSubscription(
-        realmServices.realm.query<Item>(
-            r'owner_id == $0', [realmServices.currentUser?.id.toString()]),
-        "getMyItemsSubscription");
-    realmServices.switchSubscription(
-        realmServices.realm.query<Usuario>(
-            r'IDUser == $0', [realmServices.currentUser?.id.toString()]),
-        "usuarioSubscription");
-    final usuarioAtual =
-        realmServices.realm.query<Usuario>("TRUEPREDICATE SORT(_id ASC)").first;
-    realmServices.switchSubscription(
-        realmServices.realm
-            .query<Perfil>(r'IDPerfil == $0', [usuarioAtual.perfil]),
-        "perfilSubscription");
   }
 }

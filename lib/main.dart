@@ -1,29 +1,26 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:listy/realm/realm_services.dart';
-import 'package:listy/screens/cras/cadastros/cadastros_screen.dart';
-import 'package:listy/screens/cras/capacitacao/capacitacao_screen.dart';
-import 'package:listy/screens/cras/relatorios/relatorios_screen_c.dart';
-import 'package:listy/screens/cras/selecCultivos/selec_cultivos_screen.dart';
+import 'package:listy/components/realm/realm_services.dart';
+import 'package:listy/screens/supervisor/cadastros/cadastros_screen.dart';
+import 'package:listy/screens/supervisor/capacitacao/capacitacao_screen.dart';
+import 'package:listy/screens/supervisor/relatoriosC/relatorios_screen_c.dart';
+import 'package:listy/screens/supervisor/selecCultivos/selec_cultivos_screen.dart';
 import 'package:listy/screens/produtores/colheita/colheita_screen.dart';
 import 'package:listy/screens/produtores/macProdutivo/mac_produtivo_screen.dart';
 import 'package:listy/screens/produtores/manejo/manejo_screen.dart';
 import 'package:listy/screens/produtores/regFotos/reg_fotos_screen.dart';
 import 'package:listy/screens/produtores/relatorios/relatorios_screen_p.dart';
-import 'package:listy/theme.dart';
+import 'package:listy/components/theme.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
-import 'package:listy/realm/app_services.dart';
-import 'package:listy/screens/todo/homepage.dart';
+import 'package:listy/components/realm/app_services.dart';
 import 'package:listy/screens/log_in.dart';
-
-import 'screens/home/todo_screen.dart';
+import 'components/s3/s3_storage_util.dart';
+import 'screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await S3StorageUtil.initializeAmplify();
   Config realmConfig = await Config.getConfig('assets/config/atlasConfig.json');
 
   return runApp(MultiProvider(providers: [
@@ -42,15 +39,21 @@ void main() async {
   ], child: const _App()));
 }
 
-class _App extends StatelessWidget {
+class _App extends StatefulWidget {
   const _App();
 
   @override
-  Widget build(BuildContext context) {
-    final String atlasUrl =
-        Provider.of<Config>(context, listen: false).atlasUrl;
-    print("To see your data in Atlas, follow this link:$atlasUrl");
+  State<_App> createState() => _AppState();
+}
 
+class _AppState extends State<_App> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentUser =
         Provider.of<RealmServices?>(context, listen: false)?.currentUser;
 
@@ -62,9 +65,8 @@ class _App extends StatelessWidget {
         theme: appThemeData(),
         initialRoute: currentUser != null ? '/' : '/login',
         routes: {
-          '/': (context) => const TodoScreen(),
+          '/': (context) => const HomeScreen(),
           '/login': (context) => const LogIn(),
-          '/todo': (context) => const HomePage(),
           '/colheita': (context) => const ColheitaScreen(),
           '/macProdutivo': (context) => const MacProdutivoScreen(),
           '/manejo': (context) => const ManejoScreen(),
